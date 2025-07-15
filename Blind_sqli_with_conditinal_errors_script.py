@@ -37,5 +37,5 @@ for i in range(1,21):
    pas += bin_search(0,len(char_str)-1 ,i)
    print(f"[{i}]->{pas}")
 print(f'\n[+] Password is ->{pas}')
-    
+
 
